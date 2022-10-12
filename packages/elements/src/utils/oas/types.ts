@@ -29,6 +29,6 @@ type Node<T, D> = {
 
 export type ServiceNode = Node<NodeType.HttpService, IHttpService> & { children: ServiceChildNode[] };
 export type ServiceChildNode = OperationNode | WebhookNode | SchemaNode;
-export type OperationNode = Node<NodeType.HttpOperation, IHttpOperation>;
-export type WebhookNode = Node<NodeType.HttpWebhook, IHttpWebhookOperation>;
-export type SchemaNode = Node<NodeType.Model, JSONSchema7>;
+export type OperationNode = Node<NodeType.HttpOperation, IHttpOperation> & { extensions: { [key: string]: unknown } };
+export type WebhookNode = Node<NodeType.HttpWebhook, IHttpWebhookOperation>  & { extensions: { [key: string]: unknown } } ;
+export type SchemaNode = Node<NodeType.Model, JSONSchema7> & { extensions: { [key: string]: unknown } };

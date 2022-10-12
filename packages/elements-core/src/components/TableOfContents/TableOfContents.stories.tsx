@@ -91,6 +91,7 @@ Playground.args = {
           type: 'http_operation',
           meta: 'get',
           index: '8-0-',
+          description: '',
         },
         {
           id: '/operations/delete-users-userID',
@@ -99,6 +100,7 @@ Playground.args = {
           type: 'http_operation',
           meta: 'delete',
           index: '8-1-',
+          description: '',
         },
         {
           id: '/operations/post-users-userID',
@@ -107,6 +109,7 @@ Playground.args = {
           type: 'http_operation',
           meta: 'post',
           index: '8-2-',
+          description: '',
         },
       ],
       index: '8-',
