@@ -82,6 +82,7 @@ Playground.args = {
           title: 'Get User',
           type: 'http_operation',
           meta: 'get',
+          description: '',
         },
         {
           id: '/operations/delete-users-userID',
@@ -89,6 +90,7 @@ Playground.args = {
           title: 'Delete User',
           type: 'http_operation',
           meta: 'delete',
+          description: '',
         },
         {
           id: '/operations/post-users-userID',
@@ -96,6 +98,7 @@ Playground.args = {
           title: 'Create User',
           type: 'http_operation',
           meta: 'post',
+          description: '',
         },
       ],
     },

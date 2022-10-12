@@ -122,6 +122,7 @@ function computeChildNodes(
           data: operationDocument,
           name: operationDocument.summary || operationDocument.iid || operationDocument.path,
           tags: operationDocument.tags?.map(tag => tag.name) || [],
+          extensions: { ...operationDocument.extensions },
         });
       } else if (match.type === NodeTypes.Webhook && jsonPath.length === 3) {
         const name = String(jsonPath[1]);

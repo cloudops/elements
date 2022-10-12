@@ -21,6 +21,7 @@ export {
   TableOfContentsItem,
   TableOfContentsNode,
   TableOfContentsNodeGroup,
+  TableOfContentsDivider,
 } from './components/TableOfContents/types';
 export { findFirstNode } from './components/TableOfContents/utils';
 export { TryIt, TryItProps, TryItWithRequestSamples, TryItWithRequestSamplesProps } from './components/TryIt';

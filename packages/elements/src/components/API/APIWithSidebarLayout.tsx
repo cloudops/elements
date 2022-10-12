@@ -4,7 +4,6 @@ import {
   ExportButtonProps,
   Logo,
   ParsedDocs,
-  PoweredByLink,
   resolveRelativeLink,
   SidebarLayout,
   TableOfContents,
@@ -17,6 +16,7 @@ import * as React from 'react';
 import { Link, Navigate, useLocation } from 'react-router-dom';
 
 import { ServiceNode } from '../../utils/oas/types';
+import { Search } from '../Search/Search';
 import { computeAPITree, findFirstNodeSlug, isInternal, resolveRelativePath } from './utils';
 
 type SidebarLayoutProps = {
@@ -100,18 +100,21 @@ export const APIWithSidebarLayout: React.FC<SidebarLayoutProps> = ({
     <SidebarLayout ref={container} sidebar={sidebar}>
       {node && (
         <ElementsOptionsProvider renderExtensionAddon={renderExtensionAddon}>
-          <ParsedDocs
-            key={relativePath}
-            uri={relativePath}
-            node={node}
-            nodeTitle={node.name}
-            layoutOptions={layoutOptions}
-            location={location}
-            exportProps={exportProps}
-            tryItCredentialsPolicy={tryItCredentialsPolicy}
-            tryItCorsProxy={tryItCorsProxy}
-            renderExtensionAddon={renderExtensionAddon}
-          />
+          <div>
+            <Search tree={tree}></Search>
+            <ParsedDocs
+              key={relativePath}
+              uri={relativePath}
+              node={node}
+              nodeTitle={node.name}
+              layoutOptions={layoutOptions}
+              location={location}
+              exportProps={exportProps}
+              tryItCredentialsPolicy={tryItCredentialsPolicy}
+              tryItCorsProxy={tryItCorsProxy}
+              renderExtensionAddon={renderExtensionAddon}
+            />
+          </div>
         </ElementsOptionsProvider>
       )}
     </SidebarLayout>
@@ -151,7 +154,6 @@ export const Sidebar: React.FC<SidebarProps> = ({ serviceNode, logo, container, 
           onLinkClick={handleTocClick}
         />
       </Flex>
-      <PoweredByLink source={serviceNode.name} pathname={pathname} packageType="elements" />
     </>
   );
 };
