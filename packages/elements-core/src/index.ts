@@ -15,6 +15,8 @@ export {
   TableOfContentsItem,
   TableOfContentsNode,
   TableOfContentsNodeGroup,
+  TableOfContentsGroup,
+  TableOfContentsDivider,
 } from './components/MosaicTableOfContents/types';
 export { findFirstNode } from './components/MosaicTableOfContents/utils';
 export { NonIdealState } from './components/NonIdealState';

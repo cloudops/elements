@@ -108,6 +108,7 @@ function computeChildNodes(
           data: operationDocument,
           name: operationDocument.summary || operationDocument.iid || operationDocument.path,
           tags: operationDocument.tags?.map(tag => tag.name) || [],
+          extensions: { ...operationDocument.extensions },
         });
       } else if (match.type === NodeTypes.Model) {
         const schemaDocument = get(document, jsonPath);

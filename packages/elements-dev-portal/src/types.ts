@@ -55,6 +55,7 @@ export type NodeSearchResult = NodeSummary & {
   project_slug: string;
   project_name: string;
   node_id: number;
+  description: string;
 };
 
 export type Workspace = {
