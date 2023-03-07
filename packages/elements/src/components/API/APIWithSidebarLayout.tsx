@@ -1,17 +1,11 @@
-import {
-  ExportButtonProps,
-  Logo,
-  ParsedDocs,
-  PoweredByLink,
-  SidebarLayout,
-  TableOfContents,
-} from '@stoplight/elements-core';
+import { ExportButtonProps, Logo, ParsedDocs, SidebarLayout, TableOfContents } from '@stoplight/elements-core';
 import { Flex, Heading } from '@stoplight/mosaic';
 import { NodeType } from '@stoplight/types';
 import * as React from 'react';
 import { Link, Redirect, useLocation } from 'react-router-dom';
 
 import { ServiceNode } from '../../utils/oas/types';
+import { Search } from '../Search/Search';
 import { computeAPITree, findFirstNodeSlug, isInternal } from './utils';
 
 type SidebarLayoutProps = {
@@ -84,24 +78,26 @@ export const APIWithSidebarLayout: React.FC<SidebarLayoutProps> = ({
       <Flex flexGrow flexShrink overflowY="auto" direction="col">
         <TableOfContents tree={tree} activeId={pathname} Link={Link} onLinkClick={handleTocClick} />
       </Flex>
-      <PoweredByLink source={serviceNode.name} pathname={pathname} packageType="elements" />
     </>
   );
 
   return (
     <SidebarLayout ref={container} sidebar={sidebar}>
       {node && (
-        <ParsedDocs
-          key={pathname}
-          uri={pathname}
-          node={node}
-          nodeTitle={node.name}
-          layoutOptions={layoutOptions}
-          location={location}
-          exportProps={exportProps}
-          tryItCredentialsPolicy={tryItCredentialsPolicy}
-          tryItCorsProxy={tryItCorsProxy}
-        />
+        <div>
+          <Search tree={tree}></Search>
+          <ParsedDocs
+            key={pathname}
+            uri={pathname}
+            node={node}
+            nodeTitle={node.name}
+            layoutOptions={layoutOptions}
+            location={location}
+            exportProps={exportProps}
+            tryItCredentialsPolicy={tryItCredentialsPolicy}
+            tryItCorsProxy={tryItCorsProxy}
+          />
+        </div>
       )}
     </SidebarLayout>
   );

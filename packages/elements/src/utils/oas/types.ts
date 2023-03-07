@@ -27,5 +27,5 @@ type Node<T, D> = {
 
 export type ServiceNode = Node<NodeType.HttpService, IHttpService> & { children: ServiceChildNode[] };
 export type ServiceChildNode = OperationNode | SchemaNode;
-export type OperationNode = Node<NodeType.HttpOperation, IHttpOperation>;
+export type OperationNode = Node<NodeType.HttpOperation, IHttpOperation> & { extensions: { [key: string]: unknown } };
 export type SchemaNode = Node<NodeType.Model, JSONSchema7>;

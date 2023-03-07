@@ -4,7 +4,7 @@ import { defaults } from 'lodash';
 
 import { OperationNode, ServiceChildNode, ServiceNode } from '../../utils/oas/types';
 
-export type TagGroup = { title: string; items: OperationNode[] };
+export type TagGroup = { title: string; items: OperationNode[]; tagGroups: string };
 
 export const computeTagGroups = (serviceNode: ServiceNode) => {
   const groupsByTagId: { [tagId: string]: TagGroup } = {};
@@ -26,7 +26,12 @@ export const computeTagGroups = (serviceNode: ServiceNode) => {
         groupsByTagId[tagId] = {
           title: serviceTagName || tagName,
           items: [node],
+          tagGroups: '',
         };
+      }
+      const tagGroups = node.extensions['x-tagGroups'] as string;
+      if (tagGroups) {
+        groupsByTagId[tagId].tagGroups = tagGroups;
       }
     } else {
       ungrouped.push(node);
@@ -76,11 +81,10 @@ export const computeAPITree = (serviceNode: ServiceNode, config: ComputeAPITreeC
   });
 
   const operationNodes = serviceNode.children.filter(node => node.type === NodeType.HttpOperation);
-  if (operationNodes.length) {
-    tree.push({
-      title: 'Endpoints',
-    });
+  const categoriesMap: { [key: string]: TableOfContentsItem[] } = {};
+  let categoriesOrder: string[] = [];
 
+  if (operationNodes.length) {
     const { groups, ungrouped } = computeTagGroups(serviceNode);
 
     // Show ungroupped operations above tag groups
@@ -88,13 +92,21 @@ export const computeAPITree = (serviceNode: ServiceNode, config: ComputeAPITreeC
       if (mergedConfig.hideInternal && operationNode.data.internal) {
         return;
       }
-      tree.push({
+      const category = (operationNode.extensions['x-tagsGroup'] as string) || 'Endpoints';
+      if (!categoriesMap[category]) {
+        categoriesMap[category] = [];
+      }
+      categoriesMap[category].push({
         id: operationNode.uri,
         slug: operationNode.uri,
         title: operationNode.name,
         type: operationNode.type,
         meta: operationNode.data.method,
+        description: operationNode.data.description || '',
       });
+      if (!categoriesOrder.includes(category)) {
+        categoriesOrder.push(category);
+      }
     });
 
     groups.forEach(group => {
@@ -102,22 +114,47 @@ export const computeAPITree = (serviceNode: ServiceNode, config: ComputeAPITreeC
         if (mergedConfig.hideInternal && operationNode.data.internal) {
           return [];
         }
+        const category = group.tagGroups || 'Endpoints';
         return {
-          id: operationNode.uri,
-          slug: operationNode.uri,
-          title: operationNode.name,
-          type: operationNode.type,
-          meta: operationNode.data.method,
+          category,
+          item: {
+            id: operationNode.uri,
+            slug: operationNode.uri,
+            title: operationNode.name,
+            type: operationNode.type,
+            meta: operationNode.data.method,
+            description: operationNode.data.description || '',
+          },
         };
       });
+
       if (items.length > 0) {
-        tree.push({
-          title: group.title,
-          items,
+        items.forEach(i => {
+          if (!categoriesMap[i.category]) {
+            categoriesMap[i.category] = [];
+          }
         });
+        const category = items.map(i => i.category).filter(c => c)[0];
+        categoriesMap[category].push({
+          title: group.title,
+          items: items.map(i => i.item),
+        });
+        if (!categoriesOrder.includes(category)) {
+          categoriesOrder.push(category);
+        }
       }
     });
   }
+  categoriesOrder = categoriesOrder.filter(c => c !== 'Endpoints');
+  categoriesOrder.push('Endpoints');
+  Object.entries(categoriesMap)
+    .sort((a, b) => categoriesOrder.indexOf(a[0]) - categoriesOrder.indexOf(b[0]))
+    .forEach(e => {
+      tree.push({
+        title: e[0],
+      });
+      e[1].forEach(a => tree.push(a));
+    });
 
   let schemaNodes = serviceNode.children.filter(node => node.type === NodeType.Model);
   if (mergedConfig.hideInternal) {
@@ -136,6 +173,7 @@ export const computeAPITree = (serviceNode: ServiceNode, config: ComputeAPITreeC
         title: node.name,
         type: node.type,
         meta: '',
+        description: node.data.description || '',
       });
     });
   }
