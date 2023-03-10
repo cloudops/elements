@@ -73,7 +73,7 @@ function searchScore(search: string, item: NodeSearchResult): number {
 function createResult(category: string, title: string, item: TableOfContentsItem): NodeSearchResult[] {
   if (isGroupNode(item)) {
     const group = item as TableOfContentsGroup;
-    return group.items.flatMap(i => createResult(category, (title ? title + ' ' : '') + i.title, i));
+    return group.items.flatMap(i => createResult(category, (group.title ? group.title + ' - ' : '') + i.title, i));
   }
   const node = item as TableOfContentsNode;
   const fullTitle = title + ' ' + node.title;
@@ -88,14 +88,14 @@ function createResult(category: string, title: string, item: TableOfContentsItem
       type: node.type,
       uri: '',
       slug: node.slug,
-      title: category + ' - ' + fullTitle,
+      title: fullTitle,
       summary: node.meta,
       project_id: '',
       branch_id: '',
       branch_node_id: 0,
       branch: '',
       highlighted: {
-        name: `<div>${category} - ${title || node.title}</div>`,
+        name: `<div>${title || node.title}</div>`,
         summary: `<div>${getMethod(node.meta)} ${substrDescription}</div>`,
         data: null,
       },
