@@ -137,6 +137,7 @@ export const Search: React.FC<SearchProps> = ({ tree }) => {
   const handleClose = () => {
     setOpen(false);
     setSearch('');
+    setResults([]);
   };
 
   const handleClick = (data: NodeSearchResult) => {
