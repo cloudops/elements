@@ -55,7 +55,9 @@ type SearchProps = {
 
 function searchScore(search: string, item: NodeSearchResult): number {
   let searchable: string[] = [];
-  searchable.push(item.title);
+  item.title
+    .split(' - ')
+    .forEach(t => searchable.push(t));
   searchable.push(item.project_name);
   searchable.push(item.summary);
   searchable.push(item.type);
