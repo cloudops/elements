@@ -57,7 +57,7 @@ function searchScore(search: string, item: NodeSearchResult): number {
   let searchable: string[] = [];
   item.title
     .split(' - ')
-    .forEach(t => searchable.push(t));
+    .forEach((t: string) => searchable.push(t));
   searchable.push(item.project_name);
   searchable.push(item.summary);
   searchable.push(item.type);
