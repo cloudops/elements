@@ -2,7 +2,7 @@ import { isPlainObject } from '@stoplight/json';
 import { JsonSchemaViewer } from '@stoplight/json-schema-viewer';
 import { HttpParamStyles, IHttpParam } from '@stoplight/types';
 import type { JSONSchema7Object } from 'json-schema';
-import { sortBy } from 'lodash';
+import { orderBy } from 'lodash';
 import * as React from 'react';
 
 import { useSchemaInlineRefResolver } from '../../../context/InlineRefResolver';
@@ -56,7 +56,18 @@ const httpOperationParamsToSchema = ({ parameters, parameterType }: ParametersPr
     required: [],
   };
 
-  const sortedParams = sortBy(parameters, ['required', 'name']);
+  parameters.forEach(param => (param.required = param.required ? param.required : false));
+
+  const sortedParams = orderBy(parameters, ['required', 'name'], ['desc', 'asc']);
+
+  console.log(
+    sortedParams.map(param => {
+      return {
+        parameterName: param.name,
+        parameterRequired: param.required,
+      };
+    }),
+  );
 
   for (const p of sortedParams) {
     const { name, description, required, deprecated, examples, style } = p;
