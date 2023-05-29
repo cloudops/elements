@@ -60,15 +60,6 @@ const httpOperationParamsToSchema = ({ parameters, parameterType }: ParametersPr
 
   const sortedParams = orderBy(parameters, ['required', 'name'], ['desc', 'asc']);
 
-  console.log(
-    sortedParams.map(param => {
-      return {
-        parameterName: param.name,
-        parameterRequired: param.required,
-      };
-    }),
-  );
-
   for (const p of sortedParams) {
     const { name, description, required, deprecated, examples, style } = p;
 
