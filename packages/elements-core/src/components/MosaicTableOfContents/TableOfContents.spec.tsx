@@ -263,6 +263,7 @@ describe('utils', () => {
 
       expect(firstNode).toEqual({
         id: 'abc',
+        description: '',
         title: 'Doc',
         type: 'article',
         slug: 'abc-doc',
@@ -302,6 +303,7 @@ describe('utils', () => {
       const firstNode = findFirstNode(items);
       expect(firstNode).toEqual({
         id: 'def',
+        description: '',
         title: 'Get Todo',
         slug: 'def-get-todo',
         type: 'http_operation',
