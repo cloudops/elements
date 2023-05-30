@@ -48,6 +48,7 @@ describe.each([
         groups: [
           {
             title: 'beta',
+            tagGroups: '',
             items: [
               {
                 type: nodeType,
@@ -74,6 +75,7 @@ describe.each([
                   securityDeclarationType: 'inheritedFromService',
                   extensions: {},
                 },
+                extensions: {},
                 name: '/b',
                 tags: ['beta'],
               },
@@ -81,6 +83,7 @@ describe.each([
           },
           {
             title: 'alpha',
+            tagGroups: '',
             items: [
               {
                 type: nodeType,
@@ -107,6 +110,7 @@ describe.each([
                   securityDeclarationType: 'inheritedFromService',
                   extensions: {},
                 },
+                extensions: {},
                 name: '/a',
                 tags: ['alpha'],
               },
@@ -152,6 +156,7 @@ describe.each([
         groups: [
           {
             title: 'beta',
+            tagGroups: '',
             items: [
               {
                 type: nodeType,
@@ -182,6 +187,7 @@ describe.each([
                   securityDeclarationType: 'inheritedFromService',
                   extensions: {},
                 },
+                extensions: {},
                 name: '/a',
                 tags: ['alpha', 'beta'],
               },
@@ -210,6 +216,7 @@ describe.each([
                   securityDeclarationType: 'inheritedFromService',
                   extensions: {},
                 },
+                extensions: {},
                 name: '/b',
                 tags: ['beta'],
               },
@@ -217,6 +224,7 @@ describe.each([
           },
           {
             title: 'alpha',
+            tagGroups: '',
             items: [
               {
                 type: nodeType,
@@ -247,6 +255,7 @@ describe.each([
                   securityDeclarationType: 'inheritedFromService',
                   extensions: {},
                 },
+                extensions: {},
                 name: '/a',
                 tags: ['alpha', 'beta'],
               },
@@ -297,6 +306,7 @@ describe.each([
         groups: [
           {
             title: 'beta',
+            tagGroups: '',
             items: [
               {
                 type: nodeType,
@@ -313,6 +323,7 @@ describe.each([
                   securityDeclarationType: 'inheritedFromService',
                   extensions: {},
                 },
+                extensions: {},
                 name: '/c',
                 tags: ['beta'],
               },
@@ -331,6 +342,7 @@ describe.each([
                   securityDeclarationType: 'inheritedFromService',
                   extensions: {},
                 },
+                extensions: {},
                 name: '/b',
                 tags: ['beta'],
               },
@@ -338,6 +350,7 @@ describe.each([
           },
           {
             title: 'alpha',
+            tagGroups: '',
             items: [
               {
                 type: nodeType,
@@ -354,6 +367,7 @@ describe.each([
                   securityDeclarationType: 'inheritedFromService',
                   extensions: {},
                 },
+                extensions: {},
                 name: '/a',
                 tags: ['alpha'],
               },
@@ -402,6 +416,7 @@ describe.each([
         groups: [
           {
             title: 'beta',
+            tagGroups: '',
             items: [
               {
                 type: nodeType,
@@ -418,6 +433,7 @@ describe.each([
                   securityDeclarationType: 'inheritedFromService',
                   extensions: {},
                 },
+                extensions: {},
                 name: '/b',
                 tags: ['beta'],
               },
@@ -436,6 +452,7 @@ describe.each([
                   securityDeclarationType: 'inheritedFromService',
                   extensions: {},
                 },
+                extensions: {},
                 name: '/b',
                 tags: ['beta'],
               },
@@ -443,6 +460,7 @@ describe.each([
           },
           {
             title: 'alpha',
+            tagGroups: '',
             items: [
               {
                 type: nodeType,
@@ -459,6 +477,7 @@ describe.each([
                   securityDeclarationType: 'inheritedFromService',
                   extensions: {},
                 },
+                extensions: {},
                 name: '/a',
                 tags: ['alpha'],
               },
@@ -525,6 +544,7 @@ describe.each([
         groups: [
           {
             title: 'Beta',
+            tagGroups: '',
             items: [
               {
                 type: nodeType,
@@ -551,6 +571,7 @@ describe.each([
                   securityDeclarationType: 'inheritedFromService',
                   extensions: {},
                 },
+                extensions: {},
                 name: '/b',
                 tags: ['Beta'],
               },
@@ -558,6 +579,7 @@ describe.each([
           },
           {
             title: 'alpha',
+            tagGroups: '',
             items: [
               {
                 type: nodeType,
@@ -584,6 +606,7 @@ describe.each([
                   securityDeclarationType: 'inheritedFromService',
                   extensions: {},
                 },
+                extensions: {},
                 name: '/a',
                 tags: ['alpha'],
               },
@@ -629,6 +652,7 @@ describe.each([
         groups: [
           {
             title: 'Beta',
+            tagGroups: '',
             items: [
               {
                 type: nodeType,
@@ -655,6 +679,7 @@ describe.each([
                   securityDeclarationType: 'inheritedFromService',
                   extensions: {},
                 },
+                extensions: {},
                 name: '/b',
                 tags: ['beta'],
               },
@@ -662,6 +687,7 @@ describe.each([
           },
           {
             title: 'alpha',
+            tagGroups: '',
             items: [
               {
                 type: nodeType,
@@ -688,6 +714,7 @@ describe.each([
                   securityDeclarationType: 'inheritedFromService',
                   extensions: {},
                 },
+                extensions: {},
                 name: '/a',
                 tags: ['alpha'],
               },
@@ -748,6 +775,7 @@ describe.each([
           slug: `/${pathProp}/something/get`,
           title: '/something',
           type: nodeType,
+          description: '',
         },
         { title: 'Schemas' },
         {
@@ -756,6 +784,7 @@ describe.each([
           title: 'ImportantSchema',
           type: 'model',
           meta: '',
+          description: '',
         },
       ]);
     });
@@ -808,6 +837,7 @@ describe.each([
           slug: `/${pathProp}/something/get`,
           title: '/something',
           type: nodeType,
+          description: '',
         },
       ]);
     });
@@ -847,6 +877,7 @@ describe.each([
           slug: `/${pathProp}/something/get`,
           title: '/something',
           type: nodeType,
+          description: '',
         },
       ]);
     });
@@ -898,6 +929,7 @@ describe.each([
               slug: `/${pathProp}/something/get`,
               title: '/something',
               type: nodeType,
+              description: '',
             },
           ],
         },
@@ -979,6 +1011,7 @@ describe.each([
               title: 'a',
               type: 'model',
               meta: '',
+              description: '',
             },
           ],
         },
@@ -1042,6 +1075,7 @@ describe.each([
               slug: `/${pathProp}/something-else/post`,
               title: '/something-else',
               type: nodeType,
+              description: '',
             },
           ],
         },
@@ -1085,6 +1119,7 @@ describe('when grouping models', () => {
         groups: [
           {
             title: 'beta',
+            tagGroups: '',
             items: [
               {
                 type: NodeType.Model,
@@ -1092,6 +1127,7 @@ describe('when grouping models', () => {
                 data: {
                   'x-tags': ['beta'],
                 },
+                extensions: {},
                 name: 'b',
                 tags: ['beta'],
               },
@@ -1099,6 +1135,7 @@ describe('when grouping models', () => {
           },
           {
             title: 'alpha',
+            tagGroups: '',
             items: [
               {
                 type: NodeType.Model,
@@ -1106,6 +1143,7 @@ describe('when grouping models', () => {
                 data: {
                   'x-tags': ['alpha'],
                 },
+                extensions: {},
                 name: 'a',
                 tags: ['alpha'],
               },
@@ -1152,6 +1190,7 @@ describe('when grouping models', () => {
         groups: [
           {
             title: 'beta',
+            tagGroups: '',
             items: [
               {
                 type: NodeType.Model,
@@ -1159,6 +1198,7 @@ describe('when grouping models', () => {
                 data: {
                   'x-tags': ['beta'],
                 },
+                extensions: {},
                 name: 'c',
                 tags: ['beta'],
               },
@@ -1168,6 +1208,7 @@ describe('when grouping models', () => {
                 data: {
                   'x-tags': ['beta'],
                 },
+                extensions: {},
                 name: 'b',
                 tags: ['beta'],
               },
@@ -1175,6 +1216,7 @@ describe('when grouping models', () => {
           },
           {
             title: 'alpha',
+            tagGroups: '',
             items: [
               {
                 type: NodeType.Model,
@@ -1182,6 +1224,7 @@ describe('when grouping models', () => {
                 data: {
                   'x-tags': ['alpha'],
                 },
+                extensions: {},
                 name: 'a',
                 tags: ['alpha'],
               },
@@ -1225,6 +1268,7 @@ describe('when grouping models', () => {
         groups: [
           {
             title: 'Beta',
+            tagGroups: '',
             items: [
               {
                 type: NodeType.Model,
@@ -1232,6 +1276,7 @@ describe('when grouping models', () => {
                 data: {
                   'x-tags': ['Beta'],
                 },
+                extensions: {},
                 name: 'b',
                 tags: ['Beta'],
               },
@@ -1239,6 +1284,7 @@ describe('when grouping models', () => {
           },
           {
             title: 'alpha',
+            tagGroups: '',
             items: [
               {
                 type: NodeType.Model,
@@ -1246,6 +1292,7 @@ describe('when grouping models', () => {
                 data: {
                   'x-tags': ['alpha'],
                 },
+                extensions: {},
                 name: 'a',
                 tags: ['alpha'],
               },
@@ -1289,6 +1336,7 @@ describe('when grouping models', () => {
         groups: [
           {
             title: 'Beta',
+            tagGroups: '',
             items: [
               {
                 type: NodeType.Model,
@@ -1296,6 +1344,7 @@ describe('when grouping models', () => {
                 data: {
                   'x-tags': ['beta'],
                 },
+                extensions: {},
                 name: 'b',
                 tags: ['beta'],
               },
@@ -1303,6 +1352,7 @@ describe('when grouping models', () => {
           },
           {
             title: 'alpha',
+            tagGroups: '',
             items: [
               {
                 type: NodeType.Model,
@@ -1310,6 +1360,7 @@ describe('when grouping models', () => {
                 data: {
                   'x-tags': ['alpha'],
                 },
+                extensions: {},
                 name: 'a',
                 tags: ['alpha'],
               },

@@ -149,6 +149,7 @@ function computeChildNodes(
           data: webhookDocument,
           name: webhookDocument.summary || webhookDocument.name,
           tags: webhookDocument.tags?.map(tag => tag.name) || [],
+          extensions: { ...webhookDocument.extensions },
         });
       } else if (match.type === NodeTypes.Model) {
         const schemaDocument = get(document, jsonPath);
@@ -160,6 +161,7 @@ function computeChildNodes(
           data: schemaDocument,
           name: schemaDocument.title || last(uri.split('/')) || '',
           tags: schemaDocument['x-tags'] || [],
+          extensions: { ...schemaDocument.extensions },
         });
       }
 

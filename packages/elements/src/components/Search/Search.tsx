@@ -9,7 +9,7 @@ import type { NodeSearchResult } from '@stoplight/elements-dev-portal';
 // @ts-ignore
 import { Search as ElementsSearch } from '@stoplight/elements-dev-portal';
 import * as React from 'react';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 function isGroupNode(n: TableOfContentsItem) {
   return (n as TableOfContentsGroup).items;
@@ -55,9 +55,7 @@ type SearchProps = {
 
 function searchScore(search: string, item: NodeSearchResult): number {
   let searchable: string[] = [];
-  item.title
-    .split(' - ')
-    .forEach((t: string) => searchable.push(t));
+  item.title.split(' - ').forEach((t: string) => searchable.push(t));
   searchable.push(item.project_name);
   searchable.push(item.summary);
   searchable.push(item.type);
@@ -134,7 +132,7 @@ export const Search: React.FC<SearchProps> = ({ tree }) => {
   const [search, setSearch] = React.useState('');
   const [results, setResults] = React.useState<NodeSearchResult[]>([]);
   const [open, setOpen] = React.useState(false);
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const handleClose = () => {
     setOpen(false);
@@ -143,7 +141,7 @@ export const Search: React.FC<SearchProps> = ({ tree }) => {
   };
 
   const handleClick = (data: NodeSearchResult) => {
-    history.push(data.slug);
+    navigate(data.slug);
     handleClose();
   };
 

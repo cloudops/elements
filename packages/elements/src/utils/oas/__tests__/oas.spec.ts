@@ -11,6 +11,7 @@ const oas3Document = {
   paths: {
     '/todos': {
       get: {
+        extensions: {},
         summary: 'Get Todos',
         tags: ['operation-tag'],
       },
@@ -43,6 +44,7 @@ const oas2Document = {
   paths: {
     '/todos': {
       get: {
+        extensions: {},
         summary: 'Get Todos',
         tags: ['operation-tag'],
       },
@@ -121,6 +123,7 @@ describe('computeOasNodes', () => {
             securityDeclarationType: 'inheritedFromService',
             extensions: {},
           },
+          extensions: {},
           name: 'Get Todos',
           tags: ['operation-tag'],
         },
@@ -137,6 +140,7 @@ describe('computeOasNodes', () => {
             title: 'Todo',
             'x-tags': ['model-tag'],
           },
+          extensions: {},
           name: 'Todo',
           tags: ['model-tag'],
         },
@@ -198,6 +202,7 @@ describe('computeOasNodes', () => {
             securityDeclarationType: 'inheritedFromService',
             extensions: {},
           },
+          extensions: {},
           name: 'Get Todos',
           tags: ['operation-tag'],
         },
@@ -214,6 +219,7 @@ describe('computeOasNodes', () => {
             title: 'Todo',
             'x-tags': ['model-tag'],
           },
+          extensions: {},
           name: 'Todo',
           tags: ['model-tag'],
         },
@@ -276,6 +282,7 @@ describe('computeOasNodes', () => {
             securityDeclarationType: 'inheritedFromService',
             extensions: {},
           },
+          extensions: {},
           tags: [],
           name: 'get-todos',
         },
@@ -339,6 +346,7 @@ describe('computeOasNodes', () => {
             security: [],
             extensions: {},
           },
+          extensions: {},
           tags: [],
           name: 'get-todos',
         },
