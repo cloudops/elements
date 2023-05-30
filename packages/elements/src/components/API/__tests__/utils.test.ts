@@ -39,6 +39,7 @@ describe('computeTagGroups', () => {
       groups: [
         {
           title: 'beta',
+          tagGroups: '',
           items: [
             {
               type: 'http_operation',
@@ -68,12 +69,14 @@ describe('computeTagGroups', () => {
                 security: [],
                 extensions: {},
               },
+              extensions: {},
               name: '/b',
               tags: ['beta'],
             },
           ],
         },
         {
+          tagGroups: '',
           title: 'alpha',
           items: [
             {
@@ -104,6 +107,7 @@ describe('computeTagGroups', () => {
                 security: [],
                 extensions: {},
               },
+              extensions: {},
               name: '/a',
               tags: ['alpha'],
             },
@@ -154,6 +158,7 @@ describe('computeTagGroups', () => {
       groups: [
         {
           title: 'beta',
+          tagGroups: '',
           items: [
             {
               type: 'http_operation',
@@ -169,6 +174,7 @@ describe('computeTagGroups', () => {
                 security: [],
                 extensions: {},
               },
+              extensions: {},
               name: '/c',
               tags: ['beta'],
             },
@@ -186,12 +192,14 @@ describe('computeTagGroups', () => {
                 security: [],
                 extensions: {},
               },
+              extensions: {},
               name: '/b',
               tags: ['beta'],
             },
           ],
         },
         {
+          tagGroups: '',
           title: 'alpha',
           items: [
             {
@@ -209,6 +217,7 @@ describe('computeTagGroups', () => {
                 extensions: {},
               },
               name: '/a',
+              extensions: {},
               tags: ['alpha'],
             },
           ],
@@ -255,6 +264,7 @@ describe('computeTagGroups', () => {
     expect(serviceNode ? computeTagGroups(serviceNode) : null).toEqual({
       groups: [
         {
+          tagGroups: '',
           title: 'beta',
           items: [
             {
@@ -271,6 +281,7 @@ describe('computeTagGroups', () => {
                 security: [],
                 extensions: {},
               },
+              extensions: {},
               name: '/b',
               tags: ['beta'],
             },
@@ -288,12 +299,14 @@ describe('computeTagGroups', () => {
                 security: [],
                 extensions: {},
               },
+              extensions: {},
               name: '/b',
               tags: ['beta'],
             },
           ],
         },
         {
+          tagGroups: '',
           title: 'alpha',
           items: [
             {
@@ -310,6 +323,7 @@ describe('computeTagGroups', () => {
                 security: [],
                 extensions: {},
               },
+              extensions: {},
               name: '/a',
               tags: ['alpha'],
             },
@@ -372,6 +386,7 @@ describe('computeTagGroups', () => {
     expect(serviceNode ? computeTagGroups(serviceNode) : null).toEqual({
       groups: [
         {
+          tagGroups: '',
           title: 'Beta',
           items: [
             {
@@ -402,12 +417,14 @@ describe('computeTagGroups', () => {
                 security: [],
                 extensions: {},
               },
+              extensions: {},
               name: '/b',
               tags: ['Beta'],
             },
           ],
         },
         {
+          tagGroups: '',
           title: 'alpha',
           items: [
             {
@@ -438,6 +455,7 @@ describe('computeTagGroups', () => {
                 security: [],
                 extensions: {},
               },
+              extensions: {},
               name: '/a',
               tags: ['alpha'],
             },
@@ -482,6 +500,7 @@ describe('computeTagGroups', () => {
     expect(serviceNode ? computeTagGroups(serviceNode) : null).toEqual({
       groups: [
         {
+          tagGroups: '',
           title: 'Beta',
           items: [
             {
@@ -512,12 +531,14 @@ describe('computeTagGroups', () => {
                 security: [],
                 extensions: {},
               },
+              extensions: {},
               name: '/b',
               tags: ['beta'],
             },
           ],
         },
         {
+          tagGroups: '',
           title: 'alpha',
           items: [
             {
@@ -548,6 +569,7 @@ describe('computeTagGroups', () => {
                 security: [],
                 extensions: {},
               },
+              extensions: {},
               name: '/a',
               tags: ['alpha'],
             },
@@ -604,6 +626,7 @@ describe('computeAPITree', () => {
       },
       {
         id: '/paths/something/get',
+        description: '',
         meta: 'get',
         slug: '/paths/something/get',
         title: '/something',
@@ -611,6 +634,7 @@ describe('computeAPITree', () => {
       },
       { title: 'Schemas' },
       {
+        description: '',
         id: '/schemas/ImportantSchema',
         slug: '/schemas/ImportantSchema',
         title: 'ImportantSchema',
@@ -664,6 +688,7 @@ describe('computeAPITree', () => {
       },
       {
         id: '/paths/something/get',
+        description: '',
         meta: 'get',
         slug: '/paths/something/get',
         title: '/something',
@@ -703,6 +728,7 @@ describe('computeAPITree', () => {
       },
       {
         id: '/paths/something/get',
+        description: '',
         meta: 'get',
         slug: '/paths/something/get',
         title: '/something',
@@ -753,6 +779,7 @@ describe('computeAPITree', () => {
         items: [
           {
             id: '/paths/something/get',
+            description: '',
             meta: 'get',
             slug: '/paths/something/get',
             title: '/something',
@@ -836,6 +863,7 @@ describe('computeAPITree', () => {
         items: [
           {
             id: '/paths/something-else/post',
+            description: '',
             meta: 'post',
             slug: '/paths/something-else/post',
             title: '/something-else',
