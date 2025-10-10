@@ -39,7 +39,7 @@ describe('InlineRefResolver', () => {
 
       const secondReturnedFunction = result.current;
 
-      expect(firstReturnedFunction).toBe(secondReturnedFunction);
+      expect(firstReturnedFunction?.resolver).toBe(secondReturnedFunction?.resolver);
     });
   });
 
@@ -113,7 +113,7 @@ describe('InlineRefResolver', () => {
     it('translates resolved schema', () => {
       const { result } = renderHook(() => useSchemaInlineRefResolver(), { wrapper, initialProps: { document } });
 
-      const resolved = result.current(
+      const resolved = result.current[0](
         {
           source: null,
           pointer: '#/components/schemas/User',
@@ -144,6 +144,9 @@ describe('InlineRefResolver', () => {
             format: 'int32',
             maximum: 2147483647,
             minimum: -2147483648,
+            'x-stoplight': {
+              explicitProperties: ['type', 'format'],
+            },
           },
         },
       });
@@ -170,9 +173,9 @@ describe('InlineRefResolver', () => {
       const renderedHook = renderHook(() => useSchemaInlineRefResolver(), { wrapper, initialProps: { document } });
       const renderedHook2 = renderHook(() => useSchemaInlineRefResolver(), { wrapper, initialProps: { document } });
 
-      const resolved = renderedHook.result.current({ ...refInfo }, [], JSON.parse(JSON.stringify(currentObject)));
+      const resolved = renderedHook.result.current[0]({ ...refInfo }, [], JSON.parse(JSON.stringify(currentObject)));
 
-      expect(renderedHook2.result.current({ ...refInfo }, [], JSON.parse(JSON.stringify(currentObject)))).toBe(
+      expect(renderedHook2.result.current[0]({ ...refInfo }, [], JSON.parse(JSON.stringify(currentObject)))).toBe(
         resolved,
       );
     });

@@ -2,22 +2,28 @@ import {
   CustomLinkComponent,
   Docs,
   DocsProps,
+  LinkHeading,
   MarkdownComponentsProvider,
   MockingProvider,
   ReferenceResolver,
+  RouterTypeContext,
 } from '@stoplight/elements-core';
 import { CustomComponentMapping } from '@stoplight/markdown-viewer';
 import { dirname, resolve } from '@stoplight/path';
 import { NodeType } from '@stoplight/types';
 import * as React from 'react';
+import { useLocation } from 'react-router-dom';
 
 import { Node } from '../../types';
 
 // Props shared with elements-core Docs component
-type DocsBaseProps = Pick<DocsProps, 'tryItCorsProxy' | 'tryItCredentialsPolicy' | 'nodeHasChanged'>;
+type DocsBaseProps = Pick<
+  DocsProps,
+  'tryItCorsProxy' | 'tryItCredentialsPolicy' | 'nodeHasChanged' | 'nodeUnsupported'
+>;
 type DocsLayoutProps = Pick<
   Required<DocsProps>['layoutOptions'],
-  'compact' | 'hideTryIt' | 'hideTryItPanel' | 'hideExport'
+  'compact' | 'hideTryIt' | 'hideTryItPanel' | 'hideSamples' | 'hideExport' | 'hideSecurityInfo' | 'hideServerInfo'
 >;
 
 export type NodeContentProps = {
@@ -33,6 +39,10 @@ export type NodeContentProps = {
    * Support for custom reference resolver
    */
   refResolver?: ReferenceResolver;
+
+  maxRefDepth?: number;
+
+  onExportRequest?: (type: 'original' | 'bundled') => void;
 } & DocsBaseProps &
   DocsLayoutProps;
 
@@ -41,21 +51,38 @@ export const NodeContent = ({
   Link,
   hideMocking,
   refResolver,
+  maxRefDepth,
 
   // Docs base props
   tryItCorsProxy,
   tryItCredentialsPolicy,
   nodeHasChanged,
+  nodeUnsupported,
 
   // Docs layout props
   compact,
   hideTryIt,
+  hideSamples,
   hideTryItPanel,
+  hideSecurityInfo,
+  hideServerInfo,
+
+  // Exporting
   hideExport,
+  onExportRequest,
 }: NodeContentProps) => {
   return (
     <NodeLinkContext.Provider value={[node, Link]}>
-      <MarkdownComponentsProvider value={{ a: LinkComponent }}>
+      <MarkdownComponentsProvider
+        value={{
+          a: LinkComponent,
+          // These override the default markdown-viewer components and modifies the
+          // rendering of hash routing hrefs for headings in elements-core for the BaseArticleComponent
+          h2: ({ color, ...props }) => <LinkHeading size={2} {...props} />,
+          h3: ({ color, ...props }) => <LinkHeading size={3} {...props} />,
+          h4: ({ color, ...props }) => <LinkHeading size={4} {...props} />,
+        }}
+      >
         <MockingProvider mockUrl={node.links.mock_url} hideMocking={hideMocking}>
           <Docs
             nodeType={node.type as NodeType}
@@ -65,25 +92,33 @@ export const NodeContent = ({
               compact,
               hideTryIt: hideTryIt,
               hideTryItPanel: hideTryItPanel,
-              hideExport: hideExport || node.links.export_url === undefined,
+              hideSamples,
+              hideSecurityInfo: hideSecurityInfo,
+              hideServerInfo: hideServerInfo,
+              hideExport:
+                hideExport ||
+                (node.links.export_url ?? node.links.export_original_file_url ?? node.links.export_bundled_file_url) ===
+                  undefined,
             }}
             useNodeForRefResolving
             refResolver={refResolver}
+            maxRefDepth={maxRefDepth}
             tryItCorsProxy={tryItCorsProxy}
             exportProps={
               [NodeType.HttpService, NodeType.Model].includes(node.type as NodeType)
                 ? {
-                    original: {
-                      href: node.links.export_url,
-                    },
-                    bundled: {
-                      href: getBundledUrl(node.links.export_url),
-                    },
+                    original: onExportRequest
+                      ? { onPress: () => onExportRequest('original') }
+                      : { href: node.links.export_original_file_url ?? node.links.export_url },
+                    bundled: onExportRequest
+                      ? { onPress: () => onExportRequest('bundled') }
+                      : { href: node.links.export_bundled_file_url ?? getBundledUrl(node.links.export_url) },
                   }
                 : undefined
             }
             tryItCredentialsPolicy={tryItCredentialsPolicy}
             nodeHasChanged={nodeHasChanged}
+            nodeUnsupported={nodeUnsupported}
           />
         </MockingProvider>
       </MarkdownComponentsProvider>
@@ -95,19 +130,40 @@ const NodeLinkContext = React.createContext<[Node, CustomLinkComponent] | undefi
 
 const externalRegex = new RegExp('^(?:[a-z]+:)?//', 'i');
 const LinkComponent: CustomComponentMapping['a'] = ({ children, href, title }) => {
+  console.log('LinkComponent href-----', href);
   const ctx = React.useContext(NodeLinkContext);
+  const routerKind = React.useContext(RouterTypeContext);
 
-  if (href && externalRegex.test(href)) {
-    // Open external URL in a new tab
-    return (
-      <a href={href} target="_blank" rel="noreferrer" title={title ? title : undefined}>
-        {children}
-      </a>
-    );
+  const { pathname } = useLocation();
+  const route = pathname.split('#')[0];
+
+  try {
+    if (href && externalRegex.test(href)) {
+      const baseURL = window.location.host;
+      const hrefURL = new URL(href).host;
+
+      if (baseURL === hrefURL) {
+        // Open URL in same tab if domain match
+        return (
+          <a href={href} title={title ? title : undefined}>
+            {children}
+          </a>
+        );
+      }
+      return (
+        <a href={href} target="_blank" rel="noreferrer" title={title ? title : undefined}>
+          {children}
+        </a>
+      );
+    }
+  } catch (error) {
+    console.error(error);
   }
 
   if (href && ctx) {
     const [node, Link] = ctx;
+    console.log('LinkComponent node-----', node);
+
     // Resolve relative file URI with
     const { fileUri } = getNodeUriParts(node.uri);
     const { fileUri: hrefFileUri } = getNodeUriParts(href);
@@ -124,16 +180,24 @@ const LinkComponent: CustomComponentMapping['a'] = ({ children, href, title }) =
     const [resolvedUriWithoutAnchor, hash] = resolvedUri.split('#');
     const decodedUrl = decodeURIComponent(href);
     const decodedResolvedUriWithoutAnchor = decodeURIComponent(resolvedUriWithoutAnchor);
-    const edge = node.outbound_edges.find(
+    const [pagePathWithoutHash] = pathname.split('#');
+
+    let edge = node.outbound_edges.find(
       edge => edge.uri === decodedUrl || edge.uri === decodedResolvedUriWithoutAnchor,
     );
 
+    if (!edge) {
+      edge = node.outbound_edges.find(edge => pagePathWithoutHash === `/${edge.slug}`);
+    }
+
     if (edge) {
-      return <Link to={`${edge.slug}${hash ? `#${hash}` : ''}`}>{children}</Link>;
+      const slug = routerKind === 'hash' ? `#${route.replace(node.slug, edge.slug)}` : edge.slug;
+      return <Link to={`${slug}${hash ? `#${hash}` : ''}`}>{children}</Link>;
     }
   }
 
-  return <a href={href}>{children}</a>;
+  const fullHref = routerKind === 'hash' ? `#${route}${href}` : href;
+  return <a href={fullHref}>{children}</a>;
 };
 
 function getBundledUrl(url: string | undefined) {

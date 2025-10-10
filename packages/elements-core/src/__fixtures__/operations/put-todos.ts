@@ -1,4 +1,4 @@
-import { HttpParamStyles, IHttpOperation } from '@stoplight/types';
+import { HttpOperationSecurityDeclarationTypes, HttpParamStyles, IHttpOperation } from '@stoplight/types';
 
 export const httpOperation: IHttpOperation = {
   id: '?http-operation-id?',
@@ -6,6 +6,12 @@ export const httpOperation: IHttpOperation = {
   method: 'put',
   path: '/todos/{todoId}',
   summary: 'Update Todo',
+  extensions: {
+    'x-stoplight-info': {
+      id: 'http-operation-id',
+      version: '1.0.0',
+    },
+  },
   responses: [
     {
       id: '?http-response-200?',
@@ -79,9 +85,28 @@ export const httpOperation: IHttpOperation = {
                         minimum: 0,
                         maximum: 150,
                       },
+                      plan: {
+                        enum: ['FREE', 'BASIC', 'DELUXE'],
+                        // @ts-ignore
+                        'x-enum-descriptions': {
+                          FREE: 'A happy customer',
+                          BASIC: 'Just what is needed',
+                          DELUXE: 'Big bucks',
+                        },
+                      },
                     },
                     required: ['name', 'age'],
                     description: 'Here lies the user model',
+                  },
+                  type: {
+                    description: 'The type of todo',
+                    type: 'string',
+                    enum: ['REMINDER', 'TASK'],
+                    // @ts-ignore
+                    'x-enum-descriptions': {
+                      REMINDER: 'A reminder',
+                      TASK: 'A task',
+                    },
                   },
                 },
                 required: ['id', 'user'],
@@ -279,6 +304,24 @@ export const httpOperation: IHttpOperation = {
       description: 'Development',
       url: 'https://todos-dev.stoplight.io',
     },
+    {
+      id: '?http-server-todos-pr.stoplight.io?',
+      description: 'PR',
+      url: '{proto}://x-{pr}.todos-pr.stoplight.io:{port}',
+      variables: {
+        proto: {
+          default: 'http',
+          enum: ['http', 'https'],
+        },
+        pr: {
+          default: '1000',
+        },
+        port: {
+          default: '80',
+          enum: ['443', '80'],
+        },
+      },
+    },
   ],
   request: {
     body: {
@@ -367,6 +410,14 @@ export const httpOperation: IHttpOperation = {
         },
         name: 'pairs',
         style: HttpParamStyles.Form,
+      },
+      {
+        id: '?http-query-pagination?',
+        schema: {
+          type: 'object',
+        },
+        name: 'pagination',
+        style: HttpParamStyles.DeepObject,
       },
       {
         id: '?http-query-items?',
@@ -504,8 +555,110 @@ export const httpOperation: IHttpOperation = {
       },
     ],
   },
+  callbacks: [
+    {
+      key: 'newPet',
+      extensions: {},
+      id: '3245690b6a7fc',
+      method: 'post',
+      path: '{$request.body#/newPetAvailableUrl}',
+      request: {
+        body: {
+          description: 'Callback body description',
+          contents: [
+            {
+              encodings: [],
+              examples: [],
+              id: 'abc',
+              mediaType: 'application/json',
+              schema: {
+                $schema: 'http://json-schema.org/draft-07/schema#',
+                properties: {
+                  message: {
+                    examples: ['A new pet has arrived'],
+                    type: 'string',
+                  },
+                },
+                required: ['message'],
+                type: 'object',
+              },
+            },
+          ],
+          id: 'abc',
+          required: true,
+        },
+        cookie: [],
+        headers: [],
+        path: [],
+        query: [],
+      },
+      responses: [
+        {
+          code: '200',
+          contents: [],
+          description: 'Your server returns this code if it accepts the callback',
+          headers: [],
+          id: 'abc',
+        },
+      ],
+      security: [],
+      securityDeclarationType: HttpOperationSecurityDeclarationTypes.InheritedFromService,
+      servers: [],
+      tags: [],
+    },
+    {
+      key: 'returnedPet',
+      extensions: {},
+      id: '07041d5723f4a',
+      method: 'post',
+      path: '{$request.body#/returnedPetAvailableUrl}',
+      request: {
+        body: {
+          contents: [
+            {
+              encodings: [],
+              examples: [],
+              id: 'abc',
+              mediaType: 'application/json',
+              schema: {
+                $schema: 'http://json-schema.org/draft-07/schema#',
+                properties: {
+                  message: {
+                    examples: ['A pet has been returned'],
+                    type: 'string',
+                  },
+                },
+                required: ['message'],
+                type: 'object',
+              },
+            },
+          ],
+          id: 'abc',
+          required: true,
+        },
+        cookie: [],
+        headers: [],
+        path: [],
+        query: [],
+      },
+      responses: [
+        {
+          code: '200',
+          contents: [],
+          description: 'Your server returns this code if it accepts the callback',
+          headers: [],
+          id: 'abc',
+        },
+      ],
+      security: [],
+      securityDeclarationType: HttpOperationSecurityDeclarationTypes.InheritedFromService,
+      servers: [],
+      tags: [],
+    },
+  ],
   tags: [
     {
+      id: '?http-tags-todos?',
       name: 'Todos',
     },
   ],
@@ -518,6 +671,16 @@ export const httpOperation: IHttpOperation = {
         name: 'API Key',
         in: 'query',
         description: "Use `?apikey=123` to authenticate requests. It's super secure.",
+      },
+    ],
+    [
+      {
+        id: '?http-security-api_key2?',
+        key: 'api_key2',
+        type: 'apiKey',
+        name: 'API Key 2',
+        in: 'query',
+        description: "Use `?apikey2=456` to authenticate requests. It's super secure.",
       },
     ],
     [
@@ -552,12 +715,83 @@ export const httpOperation: IHttpOperation = {
     ],
     [
       {
+        id: '?http-security-api_key?',
+        key: 'api_key',
+        type: 'apiKey',
+        name: 'API Key',
+        in: 'query',
+        description: "Use `?apikey=123` to authenticate requests. It's super secure.",
+      },
+      {
+        id: '?http-security-api_key2?',
+        key: 'api_key2',
+        type: 'apiKey',
+        name: 'Alternate API key',
+        in: 'query',
+        description: "Use `?apikey=123` to authenticate requests. It's super secure.",
+      },
+    ],
+    [
+      {
         id: '?http-security-openIdConnectKey?',
         key: 'openIdConnectKey',
         type: 'openIdConnect',
         description:
           'Get access to data while protecting your account credentials. OAuth2 is also a safer and more secure way to give you access.',
         openIdConnectUrl: 'http://openIdConnect.com',
+      },
+    ],
+    [],
+    [
+      {
+        id: '?http-security-oauth2Key?',
+        key: 'oauth2Key',
+        type: 'oauth2',
+        description:
+          'Get access to data while protecting your account credentials. OAuth2 is also a safer and more secure way to give you access.',
+        flows: {
+          implicit: {
+            scopes: {
+              'write:pets': 'modify pets in your account',
+              'read:pets': 'read your pets',
+            },
+            refreshUrl: 'http://refreshUrl.com',
+            authorizationUrl: 'http://authorizationUrl.com',
+          },
+          password: {
+            scopes: {
+              'write:pets': 'modify pets in your account',
+              'read:pets': 'read your pets',
+            },
+            refreshUrl: 'http://refreshUrl.com',
+            tokenUrl: 'http://tokenUrl.com',
+          },
+          clientCredentials: {
+            scopes: {
+              'write:pets': 'modify pets in your account',
+              'read:pets': 'read your pets',
+            },
+            refreshUrl: 'http://refreshUrl.com',
+            tokenUrl: 'http://tokenUrl.com',
+          },
+          authorizationCode: {
+            scopes: {
+              'write:pets': 'modify pets in your account',
+              'read:pets': 'read your pets',
+            },
+            refreshUrl: 'http://refreshUrl.com',
+            tokenUrl: 'http://tokenUrl.com',
+            authorizationUrl: 'http://authorizationUrl.com',
+          },
+        },
+      },
+      {
+        id: '?http-security-api_key?',
+        key: 'api_key',
+        type: 'apiKey',
+        name: 'API Key',
+        in: 'query',
+        description: "Use `?apikey=123` to authenticate requests. It's super secure.",
       },
     ],
     [
@@ -602,6 +836,24 @@ export const httpOperation: IHttpOperation = {
             authorizationUrl: 'http://authorizationUrl.com',
           },
         },
+      },
+    ],
+    [
+      {
+        id: '?http-security-api_key2?',
+        key: 'api_key2',
+        type: 'apiKey',
+        name: 'API Key 2',
+        in: 'query',
+        description: "Use `?apikey2=456` to authenticate requests. It's super secure.",
+      },
+      {
+        id: '?http-security-basicKey?',
+        key: 'basicKey',
+        type: 'http',
+        scheme: 'basic',
+        description:
+          'Get access to data while protecting your account credentials. OAuth2 is also a safer and more secure way to give you access.',
       },
     ],
   ],
