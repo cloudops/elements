@@ -277,6 +277,7 @@ const addTagGroupsToTree = <T extends GroupableNode>(
         title: node.name,
         type: node.type,
         meta: isHttpOperation(node.data) || isHttpWebhookOperation(node.data) ? node.data.method : '',
+        index: '0-',
         description: node.data.description || '',
       };
     });

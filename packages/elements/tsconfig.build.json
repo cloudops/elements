@@ -13,6 +13,8 @@
     "paths": {
       "@stoplight/elements-core": ["../elements-core/dist"],
       "@stoplight/elements-core/*": ["../elements-core/dist/*"],
+      "@stoplight/elements-dev-portal": ["../elements-dev-portal/dist"],
+      "@stoplight/elements-dev-portal/*": ["../elements-dev-portal/dist/*"],
     }
   }
 }
